@@ -3,14 +3,16 @@
 #include <conio.h>
 #include <stdio.h>
 
+int lignes = 10;
+int colonnes = 20;
 
-
-void remplissage_oiseau(int plateau_de_jeu[lignes][colonnes]) {
+void  **remplissage_oiseau(int plateau_de_jeu[][20], int lignes, int colonnes) {
     // Met les oiseaux aux 4 coins
     plateau_de_jeu[0][0] = 9;
     plateau_de_jeu[0][colonnes - 1] = 9;
     plateau_de_jeu[lignes - 1][0] = 9;
     plateau_de_jeu[lignes - 1][colonnes - 1] = 9;
+
 }
 
 char traduction_bloc(int number) {
@@ -24,11 +26,13 @@ char traduction_bloc(int number) {
     if (number == 7) {return 0x01;} // Snoopy
     if (number == 8) {return 0x0B;} // balle
     if (number == 9) {return 0x0E;} // oiseau
+    if (number == 10) {return 0x7F;} // teleporteur
+    if (number == 11) {return 0xB2;} // mur normal
     printf("Caractere inconnu");
     return 'E';
 }
 
-void affichage_terrain(int plateau_de_jeu[][colonnes]){
+void affichage_terrain(int plateau_de_jeu[][20], int lignes, int colonnes){
     for(int l = 0; l != lignes; l ++) {
         for (int c = 0; c != colonnes; c++) {
             printf("%c", traduction_bloc(plateau_de_jeu[l][c]));
@@ -37,10 +41,10 @@ void affichage_terrain(int plateau_de_jeu[][colonnes]){
     }
 }
 
+int *deplacement_snoopy(int position_snoopy[2], int terrain[][20],int lignes, int colonnes){
 
-
-int *deplacement_snoopy(int position_snoopy[2], int terrain[][colonnes]){
     char input = _getch();
+
     int new_position_snoopy[2];
     // position_snoopy[2] = [x,y]
 
@@ -95,24 +99,52 @@ int *deplacement_snoopy(int position_snoopy[2], int terrain[][colonnes]){
     return position_snoopy;
 }
 
-int main() {
+void **init_terrain_niveau_1(int plateau_de_jeu[][colonnes], int position_snoopy[2]) {
+
+    // Met les oiseaux aux 4 coins
+    plateau_de_jeu[0][0] = 9;
+    plateau_de_jeu[0][colonnes - 1] = 9;
+    plateau_de_jeu[lignes - 1][0] = 9;
+    plateau_de_jeu[lignes - 1][colonnes - 1] = 9;
+
+    // fais un carré de mur
+    for(int c = position_snoopy[1] - 2 ; c != position_snoopy[1] + 2  ; c++) {
+        plateau_de_jeu[position_snoopy[0] + 2][c] = 11;
+        plateau_de_jeu[position_snoopy[0] - 2][c] = 11;
+    }
+    for(int l = position_snoopy[0] - 2 ; l != position_snoopy[0] + 2  ; l++) {
+        plateau_de_jeu[l][position_snoopy[1]+2] = 11;
+        plateau_de_jeu[l][position_snoopy[1]-2] = 11;
+    }
+}
+
+void niveau_1(){
     int const lignes = 10;
     int const colonnes = 20;
 
-    printf("Debut du programme \n");
-    int bloc = 1;
-    //plateau
-    int plateau_de_jeu[lignes][colonnes] = {0}; // contient des chiffres de 0 a 9
-    char blocs[lignes * colonnes]; //j * colonnes + lignes
-    remplissage_oiseau(plateau_de_jeu);
     //on positionne de snoopy et on lui donne 3 vie
-    int position_snoopy[2] = {5,10}; // x,y
-    plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
-    int vie_snoopy = 3;
+    int position_snoopy[2] = {lignes/2,colonnes/2}; // x,y
 
-    affichage_terrain(plateau_de_jeu);
-    deplacement_snoopy(position_snoopy,plateau_de_jeu);
+    //plateau
+    int plateau_de_jeu[10][20] = {0}; // contient des chiffres de 0 a 9
+    init_terrain_niveau_1(plateau_de_jeu, position_snoopy);
+
+
+    affichage_terrain(plateau_de_jeu, lignes, colonnes);
+    plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
+    int *new_position_snoopy = deplacement_snoopy(position_snoopy,plateau_de_jeu,lignes,colonnes);
+    affichage_terrain(plateau_de_jeu, lignes, colonnes);
+    while(1){
+    deplacement_snoopy(position_snoopy,plateau_de_jeu, lignes, colonnes);
+    }
     system("pause");
 
+
+}
+
+int main() {
+
+    printf("Debut du programme \n");
+    niveau_1();
     return 0;
 }
