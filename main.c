@@ -6,7 +6,7 @@
 int lignes = 10;
 int colonnes = 20;
 
-// TD3 GROUPE SS7
+// TD3 GROUPE 667
 char traduction_bloc(int number) {
     if (number == 0) {return ' ';}
     if (number == 1) {return 0x01;} // bloc cassable
