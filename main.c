@@ -6,8 +6,7 @@
 int lignes = 10;
 int colonnes = 20;
 
-// TD3 GROUPE SS7
-
+// TD3 GROUPE 667
 char traduction_bloc(int number) {
     if (number == 0) {return ' ';}
     if (number == 1) {return 0x01;} // bloc cassable
@@ -51,13 +50,6 @@ void deplacement_snoopy(int position_snoopy[2], int terrain[][20],int lignes, in
     }
     if (input == 'z' ||  input == 'Z') {
         position_snoopy[0] -=  1;
-    }
-    // mode pause
-    if (input == 'p' ||  input == 'P') {
-        input = 0;
-        while(input != 'p' &&  input != 'P'){
-            input = getch();
-        }
     }
 }
 
