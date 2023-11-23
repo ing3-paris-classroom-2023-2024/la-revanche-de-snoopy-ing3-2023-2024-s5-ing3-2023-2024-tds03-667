@@ -51,6 +51,11 @@ void deplacement_snoopy(int position_snoopy[2], int terrain[][20],int lignes, in
     if (input == 'z' ||  input == 'Z') {
         position_snoopy[0] -=  1;
     }
+    if (input == 'P' ||  input == 'p') {
+        input = 0;
+        while (input != 'P' &&  input != 'p')
+            input = getch();
+    }
 }
 
 
