@@ -2,11 +2,32 @@
 #include <string.h>
 #include <conio.h>
 #include <stdio.h>
+#include <windows.h>
 
 int lignes = 10;
 int colonnes = 20;
 
+
+void curseur(int colonne, int ligne) {
+    COORD coord;
+    coord.X = colonne;
+    coord.Y = ligne;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void annonce(char *msg){
+    curseur(0, 13);
+    printf(msg);
+}
+
+void affichage_vie(int vie){
+    curseur(23, 5);
+    printf("Il vous reste %d vies", vie);
+}
+
+
 // TD3 GROUPE 667
+
 char traduction_bloc(int number) {
     if (number == 0) {return ' ';}
     if (number == 1) {return 0x01;} // bloc cassable
@@ -20,12 +41,12 @@ char traduction_bloc(int number) {
     if (number == 9) {return 0x0E;} // oiseau
     if (number == 10) {return 0x7F;} // teleporteur
     if (number == 11) {return 0xB2;} // mur normal
-    printf("Caractere inconnu");
+    annonce("Caractere inconnu");
     return 'E';
 }
 
 void affichage_terrain(int plateau_de_jeu[][20], int lignes, int colonnes){
-    printf("\n\n");
+    curseur(0,0);
 
     for(int l = 0; l != lignes; l ++) {
         for (int c = 0; c != colonnes; c++) {
@@ -86,31 +107,31 @@ void **init_terrain_niveau_1(int plateau_de_jeu[][colonnes], int position_snoopy
 
 int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20]){
     if (  plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 11){
-        affichage_terrain(plateau_de_jeu, lignes, colonnes);
-        printf("Snoopy ne peut pas avancer dans ce sens car il y a un mur\n");
+        annonce("Snoopy ne peut pas avancer dans ce sens car il y a un mur\n");
+
         return 0;
     }
     if ( position_snoopy[0] < 0 || position_snoopy[1] < 0 ||
     position_snoopy[1] > colonnes - 1 || position_snoopy[0] > lignes - 1 ){
-        affichage_terrain(plateau_de_jeu, lignes, colonnes);
-        printf("Vous sortez du terrain\n");
+        annonce("Vous sortez du terrain\n");
+
         return 0;
     }
     if ( plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 10){
-        affichage_terrain(plateau_de_jeu, lignes, colonnes);
-        printf("Vous avez trouvé un téléporteur\n");
+        annonce("Vous avez trouve un teleporteur\n");
+
         position_snoopy[1] += 3;
         return 1;
     }
     if ( plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 0){
-        affichage_terrain(plateau_de_jeu, lignes, colonnes);
+
         return 1;
     }
     // conditon de victoire
     if ( plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 9) {
         plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  = 0;
-        affichage_terrain(plateau_de_jeu, lignes, colonnes);
-        printf("Vous avez ramassé un oiseau \n");
+        annonce("Vous avez ramasse un oiseau \n");
+
         return 1;
     }
 }
@@ -129,14 +150,16 @@ void niveau_1() {
     init_terrain_niveau_1(plateau_de_jeu, position_snoopy);
     plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
 
+    // boucle de jeu
+    //affichage_terrain(plateau_de_jeu, lignes, colonnes);
 
     while (win != 1) {
-        affichage_terrain(plateau_de_jeu, lignes, colonnes);
         sauvegarde_position_snoopy[0] = position_snoopy[0];
         sauvegarde_position_snoopy[1] = position_snoopy[1];
         deplacement_snoopy(position_snoopy, plateau_de_jeu, lignes, colonnes);
 
-        //test si le deplacement es tcorrecte, si oui on remet un 0 ou etait snoopy
+
+        //test si le deplacement est correcte, si oui on remet un 0 ou etait snoopy
         if (deplacement_correcte(position_snoopy, plateau_de_jeu) == 1) {
             plateau_de_jeu[sauvegarde_position_snoopy[0]][sauvegarde_position_snoopy[1]] = 0;
         } else {
@@ -145,6 +168,8 @@ void niveau_1() {
 
         }
         plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
+
+        affichage_terrain(plateau_de_jeu, lignes, colonnes);
         // condition de victoire
         if ((plateau_de_jeu[0][0] == 0) &&
             (plateau_de_jeu[0][colonnes - 1] == 0) &&
@@ -157,7 +182,9 @@ void niveau_1() {
     }
 }
 
+
 int main() {
+
     printf("Debut du programme \n");
     niveau_1();
     return 0;
