@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
-#include "niveaux.h"
+#include "niveau 3.h"
 #define Niv1_Mdp "niveau1"
 #define Niv2_Mdp "niveau2"
 #define Niv3_Mdp "niveau3"
@@ -27,43 +27,9 @@ void lancerNouveauJeu() {
     niveau_1();
 }
 
+void chargerPartie() {
+    printf("Chargement d'une partie sauvegardée...\n");
 
-void sauvegarderPartie(int plateau_de_jeu[10][20], const char* nomFichier) {
-    FILE *file = fopen(nomFichier, "w");
-    if (file == NULL) {
-        printf("Erreur lors de la création du fichier de sauvegarde.\n");
-        return;
-    }
-
-
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 20; j++) {
-            fprintf(file, "%d ", plateau_de_jeu[i][j]);
-        }
-        fprintf(file, "\n");
-    }
-
-    fclose(file);
-    printf("Partie sauvegardée avec succès dans %s\n", nomFichier);
-}
-
-
-void chargerPartie(int plateau_de_jeu[10][20], const char* nomFichier) {
-    FILE *file = fopen(nomFichier, "r");
-    if (file == NULL) {
-        printf("Erreur lors de l'ouverture du fichier de sauvegarde.\n");
-        return;
-    }
-
-
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 20; j++) {
-            fscanf(file, "%d", &plateau_de_jeu[i][j]);
-        }
-    }
-
-    fclose(file);
-    printf("Partie chargée avec succès depuis %s\n", nomFichier);
 }
 
 void lancerNiveau(int niveau) {
