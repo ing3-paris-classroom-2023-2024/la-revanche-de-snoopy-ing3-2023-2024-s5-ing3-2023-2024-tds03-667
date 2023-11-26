@@ -196,7 +196,7 @@ void niveau_2() {
             (plateau_de_jeu[lignes - 1][0] == 0) &&
             (plateau_de_jeu[lignes - 1][colonnes - 1] == 0)) {
             affichage_terrain(plateau_de_jeu, lignes, colonnes);
-            printf("Vous avez gagné");
+            printf("Vous avez réussi le niveau 2 ! Le mot de passe est CONGRATULATION");
             win = 1;
         }
     }
