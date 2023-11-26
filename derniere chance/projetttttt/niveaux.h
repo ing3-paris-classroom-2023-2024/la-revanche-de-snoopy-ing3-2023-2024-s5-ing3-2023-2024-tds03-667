@@ -161,22 +161,22 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20], int c
 }
 
 void niveau_1() {
+    //on initialise le terrain
     int const lignes = 10;
     int const colonnes = 20;
+    // bool de victoire
     int win = 0;
 
-    //on positionne de snoopy et on lui donne 3 vie
+    //on positionne de snoopy
     int position_snoopy[2] = {lignes / 2, colonnes / 2}; // x,y
     int sauvegarde_position_snoopy[2] = {lignes / 2, colonnes / 2}; // x,y
 
     //plateau
-    int plateau_de_jeu[10][20] = {0}; // contient des chiffres de 0 a 9
+    int plateau_de_jeu[10][20] = {0}; // contient des chiffres de 0 a 11
     init_terrain_niveau_1(plateau_de_jeu, position_snoopy,colonnes,lignes);
     plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
 
     // boucle de jeu
-    //affichage_terrain(plateau_de_jeu, lignes, colonnes);
-
     while (win != 1) {
         sauvegarde_position_snoopy[0] = position_snoopy[0];
         sauvegarde_position_snoopy[1] = position_snoopy[1];
@@ -253,21 +253,22 @@ void **init_terrain_niveau_2(int plateau_de_jeu[][20], int position_snoopy[2],in
 }
 
 void niveau_2() {
+    //on initialise le terrain
     int const lignes = 10;
     int const colonnes = 20;
     int win = 0;
 
-    //on positionne de snoopy et on lui donne 3 vie
+    //on positionne de snoopy
     int position_snoopy[2] = {lignes / 2, colonnes / 2}; // x,y
     int sauvegarde_position_snoopy[2] = {lignes / 2, colonnes / 2}; // x,y
 
     //plateau
-    int plateau_de_jeu[10][20] = {0}; // contient des chiffres de 0 a 9
+    int plateau_de_jeu[10][20] = {0}; // contient des chiffres de 0 a 11
     init_terrain_niveau_2(plateau_de_jeu, position_snoopy,colonnes,lignes);
     plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
 
     // boucle de jeu
-    //affichage_terrain(plateau_de_jeu, lignes, colonnes);
+
 
     while (win != 1) {
         sauvegarde_position_snoopy[0] = position_snoopy[0];
