@@ -362,13 +362,8 @@ void niveau_3() {
         mettreAJourBalle(&positionBalleX, &positionBalleY, &directionBalleX, &directionBalleY, plateau_de_jeu, position_snoopy, position_initiale_snoopy);
 
         // Vérifier si toutes les conditions de victoire sont remplies
-        if ( (               (plateau_de_jeu[1][1] == 7) || (plateau_de_jeu[1][1] == 0) ) &&
-             ( (plateau_de_jeu[1][colonnes - 2] == 7) || (plateau_de_jeu[1][colonnes - 2] == 0) ) &&
-             ( (plateau_de_jeu[lignes - 2][1] == 7) || (plateau_de_jeu[lignes - 2][1] == 0) ) &&
-             ( (plateau_de_jeu[lignes - 2][colonnes - 2] == 7) || (plateau_de_jeu[lignes - 2][colonnes - 2] == 0) ) ){
-            affichage_terrain(plateau_de_jeu, lignes, colonnes);
-            annonce("Vous avez gagne                    \n Appuyez sur une touche pour continuer");
-            getch();
+        if ((plateau_de_jeu[0][0] == 0) && (plateau_de_jeu[0][colonnes - 1] == 0) && (plateau_de_jeu[lignes - 1][0] == 0) && (plateau_de_jeu[lignes - 1][colonnes - 1] == 0)) {
+            printf("Vous avez gagné");
             win = 1;
         }
 
