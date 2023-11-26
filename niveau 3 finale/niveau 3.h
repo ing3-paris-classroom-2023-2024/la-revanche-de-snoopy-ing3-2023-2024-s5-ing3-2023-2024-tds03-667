@@ -3,20 +3,20 @@
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
-void curseur(int colonne, int ligne) {
+void curseur3(int colonne, int ligne) {
     COORD coord;
     coord.X = colonne;
     coord.Y = ligne;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void annonce(char *msg){
-    curseur(0, 13);
+void annonce3(char *msg){
+    curseur3(0, 13);
     printf(msg);
 }
 
 
-char traduction_bloc(int number) {
+char traduction_bloc3(int number) {
     if (number == 0) {return ' ';}
     if (number == 1) {return 0x01;} // bloc cassable
     if (number == 2) {return 0x1A;} // le bloc poussable à déplacement
@@ -35,38 +35,38 @@ char traduction_bloc(int number) {
 
 
 // Affiche le plateau de jeu et la bordure de temps
-void affichage_jeu_et_temps(int plateau_de_jeu[][20], int lignes, int colonnes, int plateau_de_temps[30][30], int lignestemps, int colonnestemps) {
-    curseur(0,0);
+void affichage_jeu_et_temps3(int plateau_de_jeu[][20], int lignes, int colonnes, int plateau_de_temps[30][30], int lignestemps, int colonnestemps) {
+    curseur3(0,0);
 
     // Affiche la bordure supérieure de temps
     for (int c = 0; c < colonnestemps; c++) {
-        printf("%c", traduction_bloc(plateau_de_temps[0][c]));
+        printf("%c", traduction_bloc3(plateau_de_temps[0][c]));
     }
     printf("\n");
 
     // Affiche chaque ligne du terrain avec les bordures latérales de temps
     for (int l = 0; l < lignes; l++) {
         // Bordure gauche
-        printf("%c", traduction_bloc(plateau_de_temps[l][0]));
+        printf("%c", traduction_bloc3(plateau_de_temps[l][0]));
 
         // Affiche les éléments du jeu
         for (int c = 0; c < colonnes; c++) {
-            printf("%c", traduction_bloc(plateau_de_jeu[l][c]));
+            printf("%c", traduction_bloc3(plateau_de_jeu[l][c]));
         }
 
         // Bordure droite
-        printf("%c\n", traduction_bloc(plateau_de_temps[l][colonnestemps - 1]));
+        printf("%c\n", traduction_bloc3(plateau_de_temps[l][colonnestemps - 1]));
     }
 
     // Affiche la bordure inférieure de temps
     for (int c = 0; c < colonnestemps; c++) {
-        printf("%c", traduction_bloc(plateau_de_temps[lignestemps - 1][c]));
+        printf("%c", traduction_bloc3(plateau_de_temps[lignestemps - 1][c]));
     }
     printf("\n");
 }
 
 // Gère les déplacements de Snoopy dans le jeu
-void deplacement_snoopy(int position_snoopy[2], int terrain[][20]) {
+void deplacement_snoopy3(int position_snoopy[2], int terrain[][20]) {
     int input = getch();
     // Détecte la direction et met à jour la position de Snoopy
     if (input == 'd' || input == 'D') position_snoopy[1]++;
@@ -135,32 +135,36 @@ void init_terrain_niveau_3(int plateau_de_jeu[][20], int position_snoopy[2]) {
     plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -5] = 5;
     plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -4] = 5;
 
+    plateau_de_jeu[position_snoopy[0] +4][position_snoopy[1] -1] = 11;
+    plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] -1] = 11;
+    plateau_de_jeu[position_snoopy[0] +5][position_snoopy[1] -1] = 11;
+
 
 
 }
 
 // Vérifie si le déplacement de Snoopy est valide et met à jour le terrain en conséquence.
-int deplacement_correcte(int lignestemps, int colonnestemps, int position_snoopy[2], int plateau_de_jeu[][20], int plateau_de_temps[30][30]) {
+int deplacement_correcte3(int lignestemps, int colonnestemps, int position_snoopy[2], int plateau_de_jeu[][20], int plateau_de_temps[30][30]) {
     int lignes = 10;
     int colonnes = 20;
 
     // Vérifie si Snoopy rencontre un mur.
     if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 11||plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]==5) {
-        affichage_jeu_et_temps(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
+        affichage_jeu_et_temps3(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
         printf("Snoopy ne peut pas avancer dans ce sens car il y a un mur\n");
         return 0;
     }
 
     // Vérifie si Snoopy sort du terrain.
     if (position_snoopy[0] < 0 || position_snoopy[1] < 0 || position_snoopy[1] > colonnes - 1 || position_snoopy[0] > lignes - 1) {
-        affichage_jeu_et_temps(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
+        affichage_jeu_et_temps3(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
         printf("Vous sortez du terrain\n");
         return 0;
     }
 
     // Vérifie si Snoopy trouve un téléporteur.
     if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 10) {
-        affichage_jeu_et_temps(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
+        affichage_jeu_et_temps3(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
         printf("Vous avez trouvé un téléporteur\n");
         position_snoopy[1] += 3;
         return 1;
@@ -172,7 +176,7 @@ int deplacement_correcte(int lignestemps, int colonnestemps, int position_snoopy
             printf("Vous avez ramassé un oiseau \n");
             plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 0;
         }
-        affichage_jeu_et_temps(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
+        affichage_jeu_et_temps3(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
         return 1;
     }
 
@@ -180,7 +184,7 @@ int deplacement_correcte(int lignestemps, int colonnestemps, int position_snoopy
 }
 
 
-void mettreAJourBalle(int *positionBalleX, int *positionBalleY, int *directionX, int *directionY, int plateau_de_jeu[][20], int position_snoopy[2], int position_initiale_snoopy[2]) {
+void mettreAJourBalle3(int *positionBalleX, int *positionBalleY, int *directionX, int *directionY, int plateau_de_jeu[][20], int position_snoopy[2], int position_initiale_snoopy[2]) {
     int vie = 3; // Nombre de vies de Snoopy
     int lignes = 10, colonnes = 20; // Dimensions du terrain
 
@@ -218,7 +222,7 @@ void mettreAJourBalle(int *positionBalleX, int *positionBalleY, int *directionX,
         // Réinitialise la position de Snoopy
         position_snoopy[0] = position_initiale_snoopy[0];
         position_snoopy[1] = position_initiale_snoopy[1];
-        curseur(23, 5);
+        curseur3(23, 5);
         printf("Vies restantes : %d\n", vie);
         if (vie == 0) {
             // Logique pour retourner au menu principal ou finir le jeu
@@ -233,7 +237,7 @@ void mettreAJourBalle(int *positionBalleX, int *positionBalleY, int *directionX,
 
 // Initialisation des cases intérieures du tableau de gestion du temps
 // Ces cases représentent les espaces vides autour du terrain de jeu
-void init_temps_terrain(int plateau_de_temps[30][30], int lignestemps, int colonnestemps) {
+void init_temps_terrain3(int plateau_de_temps[30][30], int lignestemps, int colonnestemps) {
     int c, l;
     for (c = 0; c < colonnestemps; c++) {
         // Initialisation des cases supérieures et inférieures à vide
@@ -249,7 +253,7 @@ void init_temps_terrain(int plateau_de_temps[30][30], int lignestemps, int colon
 
 // Initialisation des bordures du tableau de gestion du temps
 // Ces bordures servent à indiquer le temps restant dans le jeu
-void init_temps_bordure(int plateau_de_temps[30][30], int lignestemps, int colonnestemps) {
+void init_temps_bordure3(int plateau_de_temps[30][30], int lignestemps, int colonnestemps) {
     int c, l;
     for (c = 0; c < colonnestemps; c++) {
         // Définition des bordures supérieure et inférieure
@@ -265,7 +269,7 @@ void init_temps_bordure(int plateau_de_temps[30][30], int lignestemps, int colon
 
 // Gestion de la défaite dans le jeu
 // Cette fonction met à jour la bordure de temps en fonction du temps écoulé
-void defaite(int plateau_de_temps[30][30], int lignestemps, int colonnestemps, int *caseSupprimer) {
+void defaite3(int plateau_de_temps[30][30], int lignestemps, int colonnestemps, int *caseSupprimer) {
     int totalBordures = (lignestemps + colonnestemps - 1) * 2;
     int position = *caseSupprimer % totalBordures;
 
@@ -288,13 +292,13 @@ void defaite(int plateau_de_temps[30][30], int lignestemps, int colonnestemps, i
     *caseSupprimer += 1;
 
 }
-void initCompteARebours(int* temps, int duree) {
+void initCompteARebours3(int* temps, int duree) {
     *temps = duree;
 }
 
 // Mise à jour et affichage du compte à rebours
 
-void majCompteARebours(int* temps, clock_t* dernierTemps) {
+void majCompteARebours3(int* temps, clock_t* dernierTemps) {
     clock_t tempsActuel = clock();
     double tempsEcoule = ((double)(tempsActuel - *dernierTemps)) / CLOCKS_PER_SEC;
 
@@ -315,14 +319,14 @@ void niveau_3() {
     int lignes = 10;
     int colonnes = 20;
     int temps, duree = 120; // Durée initiale du compte à rebours
-    initCompteARebours(&temps, duree);
+    initCompteARebours3(&temps, duree);
     clock_t dernierTemps = clock();
 
     int plateau_de_temps[30][30];
     int lignestemps = 30, colonnestemps = 30;
     int caseSupprimer = 0; // Compteur pour la mise à jour de la bordure de temps
-    init_temps_terrain(plateau_de_temps, lignestemps, colonnestemps);
-    init_temps_bordure(plateau_de_temps, lignestemps, colonnestemps);
+    init_temps_terrain3(plateau_de_temps, lignestemps, colonnestemps);
+    init_temps_bordure3(plateau_de_temps, lignestemps, colonnestemps);
 
     int vie = 3; // Nombre de vies de Snoopy
     int win = 0; // Indicateur de victoire
@@ -338,18 +342,18 @@ void niveau_3() {
 
     // Boucle principale du jeu
     while (win != 1 && temps > 0&& vie!=0) {
-        majCompteARebours(&temps, &dernierTemps);
-        defaite(plateau_de_temps, lignestemps, colonnestemps, &caseSupprimer);
+        majCompteARebours3(&temps, &dernierTemps);
+        defaite3(plateau_de_temps, lignestemps, colonnestemps, &caseSupprimer);
 
         if (kbhit()) {
-            deplacement_snoopy(position_snoopy, plateau_de_jeu);
+            deplacement_snoopy3(position_snoopy, plateau_de_jeu);
         }
 
         // Réinitialisation de la position précédente de Snoopy
         plateau_de_jeu[sauvegarde_position_snoopy[0]][sauvegarde_position_snoopy[1]] = 0;
 
         // Mise à jour de la position de Snoopy
-        if (!deplacement_correcte(lignestemps, colonnestemps, position_snoopy, plateau_de_jeu, plateau_de_temps)) {
+        if (!deplacement_correcte3(lignestemps, colonnestemps, position_snoopy, plateau_de_jeu, plateau_de_temps)) {
             position_snoopy[0] = sauvegarde_position_snoopy[0];
             position_snoopy[1] = sauvegarde_position_snoopy[1];
         } else {
@@ -359,7 +363,7 @@ void niveau_3() {
 
         plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7; // Mise à jour de la position actuelle de Snoopy
 
-        mettreAJourBalle(&positionBalleX, &positionBalleY, &directionBalleX, &directionBalleY, plateau_de_jeu, position_snoopy, position_initiale_snoopy);
+        mettreAJourBalle3(&positionBalleX, &positionBalleY, &directionBalleX, &directionBalleY, plateau_de_jeu, position_snoopy, position_initiale_snoopy);
 
         // Vérifier si toutes les conditions de victoire sont remplies
         if ((plateau_de_jeu[0][0] == 0) && (plateau_de_jeu[0][colonnes - 1] == 0) && (plateau_de_jeu[lignes - 1][0] == 0) && (plateau_de_jeu[lignes - 1][colonnes - 1] == 0)) {
@@ -367,7 +371,7 @@ void niveau_3() {
             win = 1;
         }
 
-        affichage_jeu_et_temps(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
+        affichage_jeu_et_temps3(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
         Sleep(100); // Délai pour ralentir la vitesse de la balle
     }
 }
