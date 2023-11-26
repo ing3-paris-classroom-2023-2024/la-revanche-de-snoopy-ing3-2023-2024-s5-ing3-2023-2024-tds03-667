@@ -192,6 +192,98 @@ void niveau_1() {
 }
 
 
+
+void **init_terrain_niveau_2(int plateau_de_jeu[][20], int position_snoopy[2],int colonnes,int lignes) {
+
+    // Met les oiseaux aux 4 coins
+    plateau_de_jeu[1][1] = 9;
+    plateau_de_jeu[1][colonnes - 2] = 9;
+    plateau_de_jeu[lignes - 2][1] = 9;
+    plateau_de_jeu[lignes - 2][colonnes - 2] = 9;
+
+    // Ajout d'une bordure de murs
+    for (int c = 0; c < colonnes; c++) {
+        plateau_de_jeu[0][c] = 11; // Mur en haut
+        plateau_de_jeu[lignes - 1][c] = 11; // Mur en bas
+    }
+    for (int l = 0; l < lignes; l++) {
+        plateau_de_jeu[l][0] = 11; // Mur à gauche
+        plateau_de_jeu[l][colonnes - 1] = 11; // Mur à droite
+    }
+
+    // fais un carré de mur
+    int largeur = 2;
+    for(int c = position_snoopy[1] - largeur ; c <= position_snoopy[1] + largeur  ; c++) {
+        plateau_de_jeu[position_snoopy[0] + largeur][c] = 11;
+        plateau_de_jeu[position_snoopy[0] - largeur][c] = 11;
+    }
+    for(int l = position_snoopy[0] - largeur ; l <= position_snoopy[0] + largeur  ; l++) {
+        plateau_de_jeu[l][position_snoopy[1] + largeur] = 11;
+        plateau_de_jeu[l][position_snoopy[1] - largeur] = 11;
+    }
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +6] = 1;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +5] = 1;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +4] = 1;
+    plateau_de_jeu[position_snoopy[0]+4][position_snoopy[1] +8] = 11;
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] +9] = 11;
+    plateau_de_jeu[position_snoopy[0] +2][position_snoopy[1] +8] = 2;
+    plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] ] = 11;
+    plateau_de_jeu[position_snoopy[0] +4][position_snoopy[1] ] = 11;
+    plateau_de_jeu[position_snoopy[0] ][position_snoopy[1]+8] = 11;
+    plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] +7] = 11;
+    // Positionne un téléporteur
+    plateau_de_jeu[position_snoopy[0]+1][position_snoopy[1]] = 10;
+
+}
+
+void niveau_2() {
+    int const lignes = 10;
+    int const colonnes = 20;
+    int win = 0;
+
+    //on positionne de snoopy et on lui donne 3 vie
+    int position_snoopy[2] = {lignes / 2, colonnes / 2}; // x,y
+    int sauvegarde_position_snoopy[2] = {lignes / 2, colonnes / 2}; // x,y
+
+    //plateau
+    int plateau_de_jeu[10][20] = {0}; // contient des chiffres de 0 a 9
+    init_terrain_niveau_2(plateau_de_jeu, position_snoopy,colonnes,lignes);
+    plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
+
+    // boucle de jeu
+    //affichage_terrain(plateau_de_jeu, lignes, colonnes);
+
+    while (win != 1) {
+        sauvegarde_position_snoopy[0] = position_snoopy[0];
+        sauvegarde_position_snoopy[1] = position_snoopy[1];
+        deplacement_snoopy(position_snoopy, plateau_de_jeu, lignes, colonnes);
+
+
+        //test si le deplacement est correcte, si oui on remet un 0 ou etait snoopy
+        if (deplacement_correcte(position_snoopy, plateau_de_jeu, colonnes,lignes) == 1) {
+            plateau_de_jeu[sauvegarde_position_snoopy[0]][sauvegarde_position_snoopy[1]] = 0;
+        } else {
+            position_snoopy[0] = sauvegarde_position_snoopy[0];
+            position_snoopy[1] = sauvegarde_position_snoopy[1];
+
+        }
+        plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
+
+        affichage_terrain(plateau_de_jeu, lignes, colonnes);
+        // condition de victoire
+        if ( (               (plateau_de_jeu[1][1] == 7) || (plateau_de_jeu[1][1] == 0) ) &&
+             ( (plateau_de_jeu[1][colonnes - 2] == 7) || (plateau_de_jeu[1][colonnes - 2] == 0) ) &&
+             ( (plateau_de_jeu[lignes - 2][1] == 7) || (plateau_de_jeu[lignes - 2][1] == 0) ) &&
+             ( (plateau_de_jeu[lignes - 2][colonnes - 2] == 7) || (plateau_de_jeu[lignes - 2][colonnes - 2] == 0) ) ){
+            affichage_terrain(plateau_de_jeu, lignes, colonnes);
+            annonce("Vous avez gagne                    \n Appuyez sur une touche pour continuer");
+            getch();
+            win = 1;
+        }
+    }
+}
+
+
 int main() {
 
     printf("Debut du programme \n");
