@@ -1,3 +1,11 @@
+//
+// Created by Utilisateur on 26/11/2023.
+//
+
+#ifndef TESTE_NIVEAU_3_H
+#define TESTE_NIVEAU_3_H
+
+#endif //TESTE_NIVEAU_3_H
 #include <stdio.h>
 #include <string.h>
 #include <conio.h>
@@ -368,7 +376,7 @@ void niveau_3() {
         }
 
         affichage_jeu_et_temps(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
-        Sleep(100); // Délai pour ralentir la vitesse de la balle
+        Sleep(1000); // Délai pour ralentir la vitesse de la balle
     }
 }
 
