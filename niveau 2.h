@@ -118,6 +118,7 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20]){
         affichage_terrain(plateau_de_jeu, lignes, colonnes);
         return 1;
     }
+    // bloc à cassé
     if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 1) {
         int input = getch();
         if (input == 'd') {
@@ -133,6 +134,7 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20]){
         affichage_terrain(plateau_de_jeu, lignes, colonnes);
         printf("Vous avez casse un bloc !\n");
     }
+    //bloc à poussé 
     if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 2) {
         int input = getch();
         if (input == 'z') {
