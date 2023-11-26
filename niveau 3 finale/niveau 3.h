@@ -102,6 +102,41 @@ void init_terrain_niveau_3(int plateau_de_jeu[][20], int position_snoopy[2]) {
 
     // Placement d'un téléporteur près de Snoopy.
     plateau_de_jeu[position_snoopy[0] - 2][position_snoopy[1] + 2] = 10;
+
+    // Bloc normaux
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +8] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +9] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +7] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +6] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +5] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +4] = 5;
+
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] -8] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] -9] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] -7] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] -6] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] -5] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] -4] = 5;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] -10] = 5;
+
+    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] -10] = 5;
+    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] -8] = 5;
+    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] -9] = 5;
+    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] -7] = 5;
+    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] -6] = 5;
+    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] -5] = 5;
+    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] -4] = 5;
+
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -10] = 5;
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -9] = 5;
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -8] = 5;
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -7] = 5;
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -6] = 5;
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -5] = 5;
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] -4] = 5;
+
+
+
 }
 
 // Vérifie si le déplacement de Snoopy est valide et met à jour le terrain en conséquence.
@@ -110,7 +145,7 @@ int deplacement_correcte(int lignestemps, int colonnestemps, int position_snoopy
     int colonnes = 20;
 
     // Vérifie si Snoopy rencontre un mur.
-    if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 11) {
+    if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 11||plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]==5) {
         affichage_jeu_et_temps(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
         printf("Snoopy ne peut pas avancer dans ce sens car il y a un mur\n");
         return 0;
@@ -147,7 +182,7 @@ int deplacement_correcte(int lignestemps, int colonnestemps, int position_snoopy
 
 void mettreAJourBalle(int *positionBalleX, int *positionBalleY, int *directionX, int *directionY, int plateau_de_jeu[][20], int position_snoopy[2], int position_initiale_snoopy[2]) {
     int vie = 3; // Nombre de vies de Snoopy
-     int lignes = 10, colonnes = 20; // Dimensions du terrain
+    int lignes = 10, colonnes = 20; // Dimensions du terrain
 
     // Sauvegarde de l'ancienne position de la balle
     int ancienX = *positionBalleX;
@@ -251,7 +286,7 @@ void defaite(int plateau_de_temps[30][30], int lignestemps, int colonnestemps, i
 
     // Incrémentation du compteur pour la prochaine mise à jour
     *caseSupprimer += 1;
-    
+
 }
 void initCompteARebours(int* temps, int duree) {
     *temps = duree;
@@ -302,7 +337,7 @@ void niveau_3() {
     int directionBalleX = 1, directionBalleY = 1; // Direction initiale de la balle
 
     // Boucle principale du jeu
-    while (win != 1 && temps > 0) {
+    while (win != 1 && temps > 0&& vie!=0) {
         majCompteARebours(&temps, &dernierTemps);
         defaite(plateau_de_temps, lignestemps, colonnestemps, &caseSupprimer);
 
