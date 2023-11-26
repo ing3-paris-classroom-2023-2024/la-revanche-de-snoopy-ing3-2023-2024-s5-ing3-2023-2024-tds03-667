@@ -69,7 +69,7 @@ void **init_terrain_niveau_2(int plateau_de_jeu[][colonnes], int position_snoopy
     plateau_de_jeu[lignes - 1][colonnes - 1] = 9;
 
     // fais un carré de mur
-    int largeur = 3;
+    int largeur = 2;
     for(int c = position_snoopy[1] - largeur ; c <= position_snoopy[1] + largeur  ; c++) {
         plateau_de_jeu[position_snoopy[0] + largeur][c] = 11;
         plateau_de_jeu[position_snoopy[0] - largeur][c] = 11;
@@ -78,15 +78,20 @@ void **init_terrain_niveau_2(int plateau_de_jeu[][colonnes], int position_snoopy
         plateau_de_jeu[l][position_snoopy[1] + largeur] = 11;
         plateau_de_jeu[l][position_snoopy[1] - largeur] = 11;
     }
-    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] +4] = 2;
-    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] +5] = 2;
-    plateau_de_jeu[position_snoopy[0] - 3][position_snoopy[1] +6] = 2;
-    plateau_de_jeu[position_snoopy[0] - 2][position_snoopy[1] +7] = 1;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +8] = 1;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +9] = 1;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +7] = 1;
     plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +6] = 1;
     plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +5] = 1;
     plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +4] = 1;
+    plateau_de_jeu[position_snoopy[0]+4][position_snoopy[1] +8] = 11;
+    plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] +9] = 11;
+    plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] +9] = 2;
+    plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] ] = 11;
+    plateau_de_jeu[position_snoopy[0] +4][position_snoopy[1] ] = 11;
+
     // Positionne un téléporteur
-    plateau_de_jeu[position_snoopy[0] - 2][position_snoopy[1] +2] = 10;
+    plateau_de_jeu[position_snoopy[0]+1][position_snoopy[1]] = 10;
 
 }
 
@@ -105,7 +110,8 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20]){
     if ( plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 10){
         affichage_terrain(plateau_de_jeu, lignes, colonnes);
         printf("Vous avez trouvé un téléporteur\n");
-        position_snoopy[1] += 3;
+        position_snoopy[1] += 9;
+        position_snoopy[0] +=3;
         return 1;
     }
     if ( plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 0){
@@ -129,19 +135,17 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20]){
     }
     if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 2) {
         int input = getch();
-
         if (input == 'z') {
-                // Faites disparaître le bloc en -1 de Snoopy
-                plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1]] = 0;
-                // Faites apparaître le bloc en -2 de Snoopy
-                plateau_de_jeu[position_snoopy[0] - 2][position_snoopy[1]] = 2;
-                // Faites avancer Snoopy d'une case
-                position_snoopy[0] -= 1;
-                affichage_terrain(plateau_de_jeu, lignes, colonnes);
-                printf("Vous avez pousse un bloc vers le haut et avancez !\n");
+            plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1]] = 2;
+        }
+        // Réinitialiser l'emplacement d'origine
+        if (plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1]] == 0) {
+            plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1]] = 2;
+            plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 0;
+            affichage_terrain(plateau_de_jeu, lignes, colonnes);
+            printf("Vous avez pousse un bloc vers le haut !\n");
         }
     }
-
 
 
 
