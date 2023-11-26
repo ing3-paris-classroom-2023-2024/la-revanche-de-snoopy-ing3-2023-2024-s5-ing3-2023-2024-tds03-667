@@ -66,13 +66,27 @@ void affichage_jeu_et_temps3(int plateau_de_jeu[][20], int lignes, int colonnes,
 }
 
 // Gère les déplacements de Snoopy dans le jeu
-void deplacement_snoopy3(int position_snoopy[2], int terrain[][20]) {
+void deplacement_snoopy3(int position_snoopy[2], int plateau_de_jeu[][20],int lignes, int colonnes){
+    // modifie position_snoopy en la nouvelle position de snoopy
     int input = getch();
-    // Détecte la direction et met à jour la position de Snoopy
-    if (input == 'd' || input == 'D') position_snoopy[1]++;
-    if (input == 's' || input == 'S') position_snoopy[0]++;
-    if (input == 'q' || input == 'Q') position_snoopy[1]--;
-    if (input == 'z' || input == 'Z') position_snoopy[0]--;
+    // position_snoopy[2] = [x,y]
+    if (input == 'd' ||  input == 'D') {
+        position_snoopy[1] += 1;
+    }
+    if (input == 's'||  input == 'S') {
+        position_snoopy[0] += 1;
+    }
+    if (input == 'q' ||  input == 'Q') {
+        position_snoopy[1] -=1;
+    }
+    if (input == 'z' ||  input == 'Z') {
+        position_snoopy[0] -=  1;
+    }
+    if (input == 'P' ||  input == 'p') {
+        input = 0;
+        while (input != 'P' &&  input != 'p')
+            input = getch();
+    }
 }
 
 
@@ -346,7 +360,7 @@ void niveau_3() {
         defaite3(plateau_de_temps, lignestemps, colonnestemps, &caseSupprimer);
 
         if (kbhit()) {
-            deplacement_snoopy3(position_snoopy, plateau_de_jeu);
+            deplacement_snoopy3(position_snoopy,  plateau_de_jeu, lignes,  colonnes);
         }
 
         // Réinitialisation de la position précédente de Snoopy
