@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <windows.h>
 
-int lignes = 10;
-int colonnes = 20;
 
 
 void curseur(int colonne, int ligne) {
@@ -47,7 +45,6 @@ char traduction_bloc(int number) {
 
 void affichage_terrain(int plateau_de_jeu[][20], int lignes, int colonnes){
     curseur(0,0);
-
     for(int l = 0; l != lignes; l ++) {
         for (int c = 0; c != colonnes; c++) {
             printf("%c", traduction_bloc(plateau_de_jeu[l][c]));
@@ -81,16 +78,26 @@ void deplacement_snoopy(int position_snoopy[2], int terrain[][20],int lignes, in
 
 
 
-void **init_terrain_niveau_1(int plateau_de_jeu[][colonnes], int position_snoopy[2]) {
+void **init_terrain_niveau_1(int plateau_de_jeu[][20], int position_snoopy[2],int colonnes,int lignes) {
 
     // Met les oiseaux aux 4 coins
-    plateau_de_jeu[0][0] = 9;
-    plateau_de_jeu[0][colonnes - 1] = 9;
-    plateau_de_jeu[lignes - 1][0] = 9;
-    plateau_de_jeu[lignes - 1][colonnes - 1] = 9;
+    plateau_de_jeu[1][1] = 9;
+    plateau_de_jeu[1][colonnes - 2] = 9;
+    plateau_de_jeu[lignes - 2][1] = 9;
+    plateau_de_jeu[lignes - 2][colonnes - 2] = 9;
+
+    // Ajout d'une bordure de murs
+    for (int c = 0; c < colonnes; c++) {
+        plateau_de_jeu[0][c] = 11; // Mur en haut
+        plateau_de_jeu[lignes - 1][c] = 11; // Mur en bas
+    }
+    for (int l = 0; l < lignes; l++) {
+        plateau_de_jeu[l][0] = 11; // Mur à gauche
+        plateau_de_jeu[l][colonnes - 1] = 11; // Mur à droite
+    }
 
     // fais un carré de mur
-    int largeur = 3;
+    int largeur = 2;
     for(int c = position_snoopy[1] - largeur ; c <= position_snoopy[1] + largeur  ; c++) {
         plateau_de_jeu[position_snoopy[0] + largeur][c] = 11;
         plateau_de_jeu[position_snoopy[0] - largeur][c] = 11;
@@ -101,18 +108,17 @@ void **init_terrain_niveau_1(int plateau_de_jeu[][colonnes], int position_snoopy
     }
 
     // Positionne un téléporteur
-    plateau_de_jeu[position_snoopy[0] - 2][position_snoopy[1] + 2] = 10;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] + 1] = 10;
 
 }
 
-int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20]){
+int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20], int colonnes, int lignes){
     if (  plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 11){
         annonce("Snoopy ne peut pas avancer dans ce sens car il y a un mur\n");
-
         return 0;
     }
     if ( position_snoopy[0] < 0 || position_snoopy[1] < 0 ||
-    position_snoopy[1] > colonnes - 1 || position_snoopy[0] > lignes - 1 ){
+         position_snoopy[1] > colonnes - 1 || position_snoopy[0] > lignes - 1 ){
         annonce("Vous sortez du terrain\n");
 
         return 0;
@@ -124,7 +130,7 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20]){
         return 1;
     }
     if ( plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 0){
-
+        annonce("                                                                ");
         return 1;
     }
     // conditon de victoire
@@ -134,6 +140,8 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20]){
 
         return 1;
     }
+
+
 }
 
 void niveau_1() {
@@ -147,7 +155,7 @@ void niveau_1() {
 
     //plateau
     int plateau_de_jeu[10][20] = {0}; // contient des chiffres de 0 a 9
-    init_terrain_niveau_1(plateau_de_jeu, position_snoopy);
+    init_terrain_niveau_1(plateau_de_jeu, position_snoopy,colonnes,lignes);
     plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 7;
 
     // boucle de jeu
@@ -160,7 +168,7 @@ void niveau_1() {
 
 
         //test si le deplacement est correcte, si oui on remet un 0 ou etait snoopy
-        if (deplacement_correcte(position_snoopy, plateau_de_jeu) == 1) {
+        if (deplacement_correcte(position_snoopy, plateau_de_jeu, colonnes,lignes) == 1) {
             plateau_de_jeu[sauvegarde_position_snoopy[0]][sauvegarde_position_snoopy[1]] = 0;
         } else {
             position_snoopy[0] = sauvegarde_position_snoopy[0];
@@ -171,12 +179,13 @@ void niveau_1() {
 
         affichage_terrain(plateau_de_jeu, lignes, colonnes);
         // condition de victoire
-        if ((plateau_de_jeu[0][0] == 0) &&
-            (plateau_de_jeu[0][colonnes - 1] == 0) &&
-            (plateau_de_jeu[lignes - 1][0] == 0) &&
-            (plateau_de_jeu[lignes - 1][colonnes - 1] == 0)) {
+        if ( (               (plateau_de_jeu[1][1] == 7) || (plateau_de_jeu[1][1] == 0) ) &&
+                ( (plateau_de_jeu[1][colonnes - 2] == 7) || (plateau_de_jeu[1][colonnes - 2] == 0) ) &&
+                  ( (plateau_de_jeu[lignes - 2][1] == 7) || (plateau_de_jeu[lignes - 2][1] == 0) ) &&
+                  ( (plateau_de_jeu[lignes - 2][colonnes - 2] == 7) || (plateau_de_jeu[lignes - 2][colonnes - 2] == 0) ) ){
             affichage_terrain(plateau_de_jeu, lignes, colonnes);
-            printf("Vous avez gagné");
+            annonce("Vous avez gagne                    \n Appuyez sur une touche pour continuer");
+            getch();
             win = 1;
         }
     }
