@@ -28,7 +28,7 @@ void affichage_vie(int vie){
 
 char traduction_bloc(int number) {
     if (number == 0) {return ' ';}
-    if (number == 1) {return 0x01;} // bloc cassable
+    if (number == 1) {return 0x16;} // bloc cassable
     if (number == 2) {return 0x1A;} // le bloc poussable à déplacement
     if (number == 3) {return 0x05;} // le bloc piégé
     if (number == 4) {return 0x0F;} // bloc invincible
