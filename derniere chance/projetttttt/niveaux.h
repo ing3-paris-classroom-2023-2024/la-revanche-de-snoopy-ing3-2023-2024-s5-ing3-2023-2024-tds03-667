@@ -200,7 +200,7 @@ void niveau_1() {
              ( (plateau_de_jeu[lignes - 2][1] == 7) || (plateau_de_jeu[lignes - 2][1] == 0) ) &&
              ( (plateau_de_jeu[lignes - 2][colonnes - 2] == 7) || (plateau_de_jeu[lignes - 2][colonnes - 2] == 0) ) ){
             affichage_terrain(plateau_de_jeu, lignes, colonnes);
-            annonce("Vous avez gagne                    \n Appuyez sur une touche pour continuer");
+            annonce("Vous avez gagne Voici le mot de passe du niveau2: niveau2                    \n Appuyez sur une touche pour continuer");
             getch();
             win = 1;
         }
@@ -242,7 +242,7 @@ void **init_terrain_niveau_2(int plateau_de_jeu[][20], int position_snoopy[2],in
     plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +4] = 1;
     plateau_de_jeu[position_snoopy[0]+4][position_snoopy[1] +8] = 11;
     plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] +9] = 11;
-    plateau_de_jeu[position_snoopy[0] +2][position_snoopy[1] +8] = 2;
+    //plateau_de_jeu[position_snoopy[0] +2][position_snoopy[1] +8] = 2;
     plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] ] = 11;
     plateau_de_jeu[position_snoopy[0] +4][position_snoopy[1] ] = 11;
     plateau_de_jeu[position_snoopy[0] ][position_snoopy[1]+8] = 11;
@@ -293,7 +293,7 @@ void niveau_2() {
              ( (plateau_de_jeu[lignes - 2][1] == 7) || (plateau_de_jeu[lignes - 2][1] == 0) ) &&
              ( (plateau_de_jeu[lignes - 2][colonnes - 2] == 7) || (plateau_de_jeu[lignes - 2][colonnes - 2] == 0) ) ){
             affichage_terrain(plateau_de_jeu, lignes, colonnes);
-            annonce("Vous avez gagne                    \n Appuyez sur une touche pour continuer");
+            annonce("Vous avez gagne, Voici le mot de pase du niveau 3:niveau3                    \n Appuyez sur une touche pour continuer");
             getch();
             win = 1;
         }
@@ -536,22 +536,6 @@ void mettreAJourBalle3(int *positionBalleX, int *positionBalleY, int *directionX
     if (plateau_de_jeu[ancienY][ancienX] != 9 && plateau_de_jeu[ancienY][ancienX] != 7) {
         plateau_de_jeu[ancienY][ancienX] = 0;
     }
-
-
-    // Collision avec Snoopy
-    if (plateau_de_jeu[*positionBalleY][*positionBalleX] == 7) {
-        printf("Snoopy est touché par la balle!\n");
-        vie -= 1; // Décrémente le nombre de vies
-        // Réinitialise la position de Snoopy
-        position_snoopy[0] = position_initiale_snoopy[0];
-        position_snoopy[1] = position_initiale_snoopy[1];
-        curseur3(23, 5);
-        printf("Vies restantes : %d\n", vie);
-        if (vie == 0) {
-            // Logique pour retourner au menu principal ou finir le jeu
-        }
-    }
-
     // Met à jour la position de la balle sur le plateau
     if (plateau_de_jeu[*positionBalleY][*positionBalleX] != 9 && plateau_de_jeu[*positionBalleY][*positionBalleX] != 7) {
         plateau_de_jeu[*positionBalleY][*positionBalleX] = 8;
@@ -693,12 +677,23 @@ void niveau_3() {
             printf("Vous avez gagné");
             win = 1;
         }
+        if (plateau_de_jeu[positionBalleY][positionBalleX] == 7) {
+            printf("Snoopy est touché par la balle!\n");
+            vie -= 1; // Décrémente le nombre de vies
+            // Réinitialise la position de Snoopy
+            position_snoopy[0] = position_initiale_snoopy[0];
+            position_snoopy[1] = position_initiale_snoopy[1];
+            printf("Vies restantes : %d\n", vie);
+            if (vie == 0) {
+                break;
+                // Logique pour retourner au menu principal ou finir le jeu
+            }
+        }
 
         affichage_jeu_et_temps3(plateau_de_jeu, lignes, colonnes, plateau_de_temps, lignestemps, colonnestemps);
         Sleep(100); // Délai pour ralentir la vitesse de la balle
     }
 }
-
 
 
 
