@@ -149,6 +149,22 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20], int c
         annonce("                                                                ");
         return 1;
     }
+    if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 2) {
+        // verif bloc du dessus vide ou non
+        if (position_snoopy[0] - 1 >= 0 && plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1]] == 0) {
+            // Deplace le bloc vers le haut
+            plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1]] = 2;
+            plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] = 0;
+            affichage_terrain(plateau_de_jeu, lignes, colonnes);
+            printf("Vous avez poussé un bloc vers le haut !\n");
+        } else {
+            // il y a un bloc au dessus
+            printf("impossible de pousser plus loin\n");
+        }
+    }
+
+
+
     // conditon de victoire
     if ( plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  == 9) {
         plateau_de_jeu[position_snoopy[0]][position_snoopy[1]]  = 0;
@@ -240,13 +256,17 @@ void **init_terrain_niveau_2(int plateau_de_jeu[][20], int position_snoopy[2],in
     plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +6] = 1;
     plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +5] = 1;
     plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +4] = 1;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +3] = 1;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +7] = 1;
+    plateau_de_jeu[position_snoopy[0] - 1][position_snoopy[1] +8] = 1;
     plateau_de_jeu[position_snoopy[0]+4][position_snoopy[1] +8] = 11;
     plateau_de_jeu[position_snoopy[0] +1][position_snoopy[1] +9] = 11;
-    //plateau_de_jeu[position_snoopy[0] +2][position_snoopy[1] +8] = 2;
+    plateau_de_jeu[position_snoopy[0] +2][position_snoopy[1] +8] = 2;
     plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] ] = 11;
     plateau_de_jeu[position_snoopy[0] +4][position_snoopy[1] ] = 11;
     plateau_de_jeu[position_snoopy[0] ][position_snoopy[1]+8] = 11;
     plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] +7] = 11;
+    plateau_de_jeu[position_snoopy[0] +3][position_snoopy[1] +5] = 10;
     // Positionne un téléporteur
     plateau_de_jeu[position_snoopy[0]+1][position_snoopy[1]] = 10;
 
@@ -493,6 +513,14 @@ int deplacement_correcte3(int lignestemps, int colonnestemps, int position_snoop
         return 1;
     }
 
+
+
+
+
+
+
+
+    return 1;
     // Vérifie si la case est vide ou contient un oiseau.
     if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 0 || plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 9) {
         if (plateau_de_jeu[position_snoopy[0]][position_snoopy[1]] == 9) {
@@ -694,7 +722,5 @@ void niveau_3() {
         Sleep(100); // Délai pour ralentir la vitesse de la balle
     }
 }
-
-
 
 
