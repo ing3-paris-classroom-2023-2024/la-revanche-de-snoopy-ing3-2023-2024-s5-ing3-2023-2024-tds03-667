@@ -177,6 +177,9 @@ int deplacement_correcte(int position_snoopy[2], int plateau_de_jeu[][20], int c
 }
 
 void niveau_1() {
+    int temps, duree = 120; // Durée initiale du compte à rebours
+    initCompteARebours3(&temps, duree);
+    clock_t dernierTemps = clock();
     //on initialise le terrain
     int const lignes = 10;
     int const colonnes = 20;
@@ -194,9 +197,14 @@ void niveau_1() {
 
     // boucle de jeu
     while (win != 1) {
+        majCompteARebours3(&temps, &dernierTemps);
         sauvegarde_position_snoopy[0] = position_snoopy[0];
         sauvegarde_position_snoopy[1] = position_snoopy[1];
-        deplacement_snoopy(position_snoopy, plateau_de_jeu, lignes, colonnes);
+
+        if (kbhit()) {
+            deplacement_snoopy3(position_snoopy,  plateau_de_jeu, lignes,  colonnes);
+        }
+
 
 
         //test si le deplacement est correcte, si oui on remet un 0 ou etait snoopy
@@ -219,7 +227,9 @@ void niveau_1() {
             annonce("Vous avez gagne Voici le mot de passe du niveau2: niveau2                    \n Appuyez sur une touche pour continuer");
             getch();
             win = 1;
+
         }
+        Sleep(100);
     }
 }
 
@@ -277,6 +287,9 @@ void niveau_2() {
     int const lignes = 10;
     int const colonnes = 20;
     int win = 0;
+    int temps, duree = 120; // Durée initiale du compte à rebours
+    initCompteARebours3(&temps, duree);
+    clock_t dernierTemps = clock();
 
     //on positionne de snoopy
     int position_snoopy[2] = {lignes / 2, colonnes / 2}; // x,y
@@ -293,7 +306,10 @@ void niveau_2() {
     while (win != 1) {
         sauvegarde_position_snoopy[0] = position_snoopy[0];
         sauvegarde_position_snoopy[1] = position_snoopy[1];
-        deplacement_snoopy(position_snoopy, plateau_de_jeu, lignes, colonnes);
+        majCompteARebours3(&temps, &dernierTemps);
+        if (kbhit()) {
+            deplacement_snoopy3(position_snoopy,  plateau_de_jeu, lignes,  colonnes);
+        }
 
 
         //test si le deplacement est correcte, si oui on remet un 0 ou etait snoopy
@@ -317,6 +333,7 @@ void niveau_2() {
             getch();
             win = 1;
         }
+        Sleep(100);
     }
 }
 
@@ -722,5 +739,4 @@ void niveau_3() {
         Sleep(100); // Délai pour ralentir la vitesse de la balle
     }
 }
-
 
